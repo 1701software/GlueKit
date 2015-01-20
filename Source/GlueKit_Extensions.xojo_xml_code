@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2014r3.1" FormatVersion="2" MinIDEVersion="20140300">
+<block type="Module" ID="1352907943">
+ <ObjName>GlueKit_Extensions</ObjName>
+ <ObjContainerID>245979215</ObjContainerID>
+ <IsClass>0</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>EncodeHex</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI) or  (TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EncodeHex(Extends t As Text) As Text</SourceLine>
+   <SourceLine>// Loop through Codepoints and convert to Hex characters.</SourceLine>
+   <SourceLine>Dim hex As Text</SourceLine>
+   <SourceLine>For Each codePoint As UInt32 In t.Codepoints</SourceLine>
+   <SourceLine>If (codePoint &lt;= 15) Then </SourceLine>
+   <SourceLine>// The new ToHex() method does not add a 0 on numbers 0-15. We need 0 to be 00 for instance.</SourceLine>
+   <SourceLine>hex = hex + "0"</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>hex = hex + codePoint.ToHex</SourceLine>
+   <SourceLine>Next</SourceLine>
+   <SourceLine>Return hex</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends t As Text</ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseJSON</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseJSON(Extends t As Text) As Auto</SourceLine>
+   <SourceLine>Return Xojo.Data.ParseJSON(t)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends t As Text</ItemParams>
+  <ItemResult>Auto</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseJSON</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseJSON(Extends t As Text) As Auto</SourceLine>
+   <SourceLine>// Create old framework style JSONItem</SourceLine>
+   <SourceLine>Dim _json As New JSONItem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create top level dictionary</SourceLine>
+   <SourceLine>Dim _auto As Auto</SourceLine>
+   <SourceLine>Dim _multi() As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Attempt to parse JSON data</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>_json.Load(t)</SourceLine>
+   <SourceLine>Catch e As JSONException</SourceLine>
+   <SourceLine>// Problem parsing the JSON. Create type 'GlueKitInvalidJSONException'</SourceLine>
+   <SourceLine>Dim error As New GlueKitInvalidJSONException</SourceLine>
+   <SourceLine>error.ErrorNumber = e.ErrorNumber</SourceLine>
+   <SourceLine>error.Message = e.Message</SourceLine>
+   <SourceLine>error.Reason = e.Reason</SourceLine>
+   <SourceLine>Raise error</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Determine if this item is an array.</SourceLine>
+   <SourceLine>If (_json.IsArray() = True) Then</SourceLine>
+   <SourceLine>// Loop through items in array, convert them to Dictionaries and add to _top</SourceLine>
+   <SourceLine>For J As Integer = 1 To _json.Count</SourceLine>
+   <SourceLine>Dim _tempDic As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>_tempDic = mConvertJsonItemToDictionary(_json.Child(J - 1))</SourceLine>
+   <SourceLine>_multi.Append(_tempDic)</SourceLine>
+   <SourceLine>Next</SourceLine>
+   <SourceLine>// Return multiple dictionaries as Auto() array</SourceLine>
+   <SourceLine>Return _multi</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// This item is not an array.</SourceLine>
+   <SourceLine>_auto = mConvertJsonItemToDictionary(_json)</SourceLine>
+   <SourceLine>Return _auto</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends t As Text</ItemParams>
+  <ItemResult>Auto</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>mBase64ValueOf</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function mBase64ValueOf(byteValue As Integer) As UInt8</SourceLine>
+   <SourceLine>select case byteValue</SourceLine>
+   <SourceLine>case 65 to 90 // A to Z</SourceLine>
+   <SourceLine>return byteValue - 65</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>case 97 to 122 // a to z</SourceLine>
+   <SourceLine>return 26 + ( byteValue - 97 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>case 48 to 57 // 0 - 9</SourceLine>
+   <SourceLine>return 52 + ( byteValue - 48 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>case 43 // +</SourceLine>
+   <SourceLine>return 62</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>case 47 // /</SourceLine>
+   <SourceLine>return 63</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>case 61 // =</SourceLine>
+   <SourceLine>return 0</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>raise new OutOfBoundsException</SourceLine>
+   <SourceLine>end</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>byteValue As Integer</ItemParams>
+  <ItemResult>UInt8</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>mBase64LookupTable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function mBase64LookupTable() As Text()</SourceLine>
+   <SourceLine>static r() as text</SourceLine>
+   <SourceLine>if r.Ubound = -1 then</SourceLine>
+   <SourceLine>dim bunch as Text = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"</SourceLine>
+   <SourceLine>for each char as text in bunch.Characters</SourceLine>
+   <SourceLine>r.Append char</SourceLine>
+   <SourceLine>next</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>return r</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Text()</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EncodeBase64</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EncodeBase64(Extends t As Text) As Text</SourceLine>
+   <SourceLine>if t.Empty then</SourceLine>
+   <SourceLine>return ""</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim lookup() as Text = mBase64LookupTable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim maskByte1 as UInt8 = &amp;b11111100</SourceLine>
+   <SourceLine>dim maskByte2 as UInt16 = &amp;b0000001111110000</SourceLine>
+   <SourceLine>dim maskByte3 as UInt16 = &amp;b0000111111000000</SourceLine>
+   <SourceLine>dim maskByte4 as Uint8 = &amp;b00111111</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>// Pad the text if needed</SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>dim nullCount as integer = t.Length mod 3</SourceLine>
+   <SourceLine>if nullCount &lt;&gt; 0 then</SourceLine>
+   <SourceLine>nullCount = 3 - nullCount</SourceLine>
+   <SourceLine>t = t + Text.FromUnicodeCodepoint( 0 )</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim chars() as text</SourceLine>
+   <SourceLine>dim mb as Xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>#if TargetIOS then</SourceLine>
+   <SourceLine>mb = Xojo.Core.TextEncoding.UTF8.ConvertTextToData( t )</SourceLine>
+   <SourceLine>#else</SourceLine>
+   <SourceLine>mb = Xojo.Core.TextEncoding.UTF8.ConvertTextToData(t)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>mb.LittleEndian = false</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim lastByteIndex as integer = mb.Size - 1</SourceLine>
+   <SourceLine>for masterIndex as integer = 0 to lastByteIndex step 3</SourceLine>
+   <SourceLine>dim byteIndex as integer = masterIndex</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim lookupIndex as integer = mb.UInt8Value( byteIndex ) and maskByte1</SourceLine>
+   <SourceLine>lookupIndex = lookupIndex \ 4</SourceLine>
+   <SourceLine>chars.Append lookup( lookupIndex )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if byteIndex = lastByteIndex then</SourceLine>
+   <SourceLine>exit</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>lookupIndex = mb.UInt16Value( byteIndex ) and maskByte2</SourceLine>
+   <SourceLine>lookupIndex = lookupIndex \ 16</SourceLine>
+   <SourceLine>chars.Append lookup( lookupIndex )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>byteIndex = byteIndex + 1</SourceLine>
+   <SourceLine>if byteIndex = lastByteIndex then</SourceLine>
+   <SourceLine>exit</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>lookupIndex = mb.UInt16Value( byteIndex ) and maskByte3</SourceLine>
+   <SourceLine>lookupIndex = lookupIndex \ 64</SourceLine>
+   <SourceLine>chars.Append lookup( lookupIndex )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>byteIndex = byteIndex + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>lookupIndex = mb.UInt8Value( byteIndex ) and maskByte4</SourceLine>
+   <SourceLine>chars.Append lookup( lookupIndex )</SourceLine>
+   <SourceLine>next</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if nullCount = 2 then</SourceLine>
+   <SourceLine>chars.Append "=="</SourceLine>
+   <SourceLine>elseif nullCount = 1 then</SourceLine>
+   <SourceLine>chars( chars.Ubound ) = "="</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim whole as Text = Text.Join( chars, "" )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim sections() as Text</SourceLine>
+   <SourceLine>dim lastTextIndex as integer = whole.Length - 1</SourceLine>
+   <SourceLine>for i as integer = 0 to lastTextIndex step 76</SourceLine>
+   <SourceLine>dim lineLen as integer = if( i + 76 &lt;= lastTextIndex, 76, lastTextIndex - i + 1 )</SourceLine>
+   <SourceLine>sections.Append whole.Mid( i, lineLen )</SourceLine>
+   <SourceLine>next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>static eol as Text = Text.FromUnicodeCodepoint( 13 ) + Text.FromUnicodeCodepoint( 10 )</SourceLine>
+   <SourceLine>dim r as text = Text.Join( sections, eol )</SourceLine>
+   <SourceLine>return r</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends t As Text</ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DecodeBase64</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DecodeBase64(Encoded As Text) As Xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>static last4BitsMask as UInt8 = &amp;b00001111</SourceLine>
+   <SourceLine>static last2BitsMask as UInt8 = &amp;b00000011</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if encoded.Empty then</SourceLine>
+   <SourceLine>return nil</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>// Get rid of the EOL</SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>encoded = encoded.ReplaceAll( Text.FromUnicodeCodepoint( 10 ), "" )</SourceLine>
+   <SourceLine>encoded = encoded.ReplaceAll( Text.FromUnicodeCodepoint( 13 ), "" )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if encoded.Length mod 4 &lt;&gt; 0 then</SourceLine>
+   <SourceLine>raise new OutOfBoundsException</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim nullCount as integer</SourceLine>
+   <SourceLine>if encoded.Right( 2 ) = "==" then</SourceLine>
+   <SourceLine>nullCount = 2</SourceLine>
+   <SourceLine>elseif encoded.Right( 1 ) = "=" then</SourceLine>
+   <SourceLine>nullCount = 1</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim mb as Xojo.Core.MemoryBlock = Xojo.Core.TextEncoding.UTF8.ConvertTextToData( encoded )</SourceLine>
+   <SourceLine>dim result as new Xojo.Core.MemoryBlock( ( mb.Size * 3 / 4 ) - nullCount )</SourceLine>
+   <SourceLine>dim resultIndex as integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim lastByteIndex as integer = mb.Size - 1</SourceLine>
+   <SourceLine>dim sourcePtr as Ptr = mb.Data</SourceLine>
+   <SourceLine>dim resultPtr as Ptr = result.Data</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>for i as integer = 0 to lastByteIndex step 4</SourceLine>
+   <SourceLine>dim raw1 as UInt8 = sourcePtr.Byte( i )</SourceLine>
+   <SourceLine>dim raw2 as UInt8 = sourcePtr.Byte( i + 1 )</SourceLine>
+   <SourceLine>dim raw3 as UInt8 = sourcePtr.Byte( i + 2 )</SourceLine>
+   <SourceLine>dim raw4 as UInt8 = sourcePtr.Byte( i + 3 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim lookup1 as UInt8 = mBase64ValueOf( raw1 )</SourceLine>
+   <SourceLine>dim lookup2 as UInt8 = mBase64ValueOf( raw2 )</SourceLine>
+   <SourceLine>dim lookup3 as UInt8 = mBase64ValueOf( raw3 )</SourceLine>
+   <SourceLine>dim lookup4 as UInt8 = mBase64ValueOf( raw4 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim thisByte as UInt8</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>thisByte = ( lookup1 * 4 ) + ( lookup2 \ 16 )</SourceLine>
+   <SourceLine>resultPtr.Byte( resultIndex ) = thisByte</SourceLine>
+   <SourceLine>resultIndex = resultIndex + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if resultIndex &gt;= result.Size then</SourceLine>
+   <SourceLine>exit</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim last4Bits as UInt8 = lookup2 and last4BitsMask</SourceLine>
+   <SourceLine>dim first4Bits as UInt8 = lookup3 \ 4</SourceLine>
+   <SourceLine>thisByte = ( last4Bits * 16 ) + first4Bits</SourceLine>
+   <SourceLine>resultPtr.Byte( resultIndex ) = thisByte</SourceLine>
+   <SourceLine>resultIndex = resultIndex + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if resultIndex &gt;= result.Size then</SourceLine>
+   <SourceLine>exit</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>dim last2Bits as UInt8 = lookup3 and last2BitsMask</SourceLine>
+   <SourceLine>thisByte = ( last2Bits * 64 ) + lookup4</SourceLine>
+   <SourceLine>resultPtr.Byte( resultIndex ) = thisByte</SourceLine>
+   <SourceLine>resultIndex = resultIndex + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>next</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>return result</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Encoded As Text</ItemParams>
+  <ItemResult>Xojo.Core.MemoryBlock</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>mConvertJSONItemToDictionary</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function mConvertJSONItemToDictionary(json As JSONItem) As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>// Create instance of Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Dim _dic As New Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Determine if the JSON is an array or not.</SourceLine>
+   <SourceLine>If (json.IsArray = True) Then</SourceLine>
+   <SourceLine>For X As Integer = 0 To json.Count - 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert this variant to a string</SourceLine>
+   <SourceLine>Dim _variant As Variant</SourceLine>
+   <SourceLine>_variant = json(X)</SourceLine>
+   <SourceLine>Dim _string As String</SourceLine>
+   <SourceLine>_string = DefineEncoding(_variant.StringValue, Encodings.ASCII)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return JSON string as value.</SourceLine>
+   <SourceLineBreakpoint>14</SourceLineBreakpoint>
+   <SourceLine>If (_string &lt;&gt; "") Then</SourceLine>
+   <SourceLine>_dic.Value(X.ToText()) = _string.ToText()</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Next</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Loop through JSONItem names and add to dictionary</SourceLine>
+   <SourceLine>For Each J As String In json.Names()</SourceLine>
+   <SourceLine>// Determine if the item is a sub-JSON item.</SourceLine>
+   <SourceLine>Dim _type As Xojo.Introspection.TypeInfo = Xojo.Introspection.GetType(json.Value(J))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If (_type.FullName = "JSONItem") Then</SourceLine>
+   <SourceLine>_dic.Value(J) = mConvertJSONItemToDictionary(json.Value(J))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>_dic.Value(J) = json.Value(J).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return Dictionary</SourceLine>
+   <SourceLine>Return _dic</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>json As JSONItem</ItemParams>
+  <ItemResult>Xojo.Core.Dictionary</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ToText</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ToText(Extends a As Auto, encoding As Xojo.Core.TextEncoding = Nil) As Text</SourceLine>
+   <SourceLine>// Create Text variable</SourceLine>
+   <SourceLine>Dim _return As Text</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Determine OS/Framework</SourceLine>
+   <SourceLine>#IF TargetiOS THEN</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use introspection to determine if this is a number.</SourceLine>
+   <SourceLine>Dim _type As Xojo.Introspection.TypeInfo</SourceLine>
+   <SourceLine>_type = Xojo.Introspection.GetType(a)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Determine type of class.</SourceLine>
+   <SourceLine>If (_type.FullName = "Text") Then</SourceLine>
+   <SourceLine>// On iOS we can convert to Text automatically</SourceLine>
+   <SourceLine>_return = a</SourceLine>
+   <SourceLine>ElseIf (_type.FullName = "Double") Then</SourceLine>
+   <SourceLine>// Let's create this as a Double</SourceLine>
+   <SourceLine>Dim _double As Double</SourceLine>
+   <SourceLine>_double = a</SourceLine>
+   <SourceLine>// Convert Double to Text</SourceLine>
+   <SourceLine>_return = _double.ToText()</SourceLine>
+   <SourceLine>ElseIf (_type.FullName = "Int32") Then</SourceLine>
+   <SourceLine>// Let's create this as a Integer</SourceLine>
+   <SourceLine>Dim _integer As Integer</SourceLine>
+   <SourceLine>_integer = a</SourceLine>
+   <SourceLine>// Convert Integer to Text</SourceLine>
+   <SourceLine>_return = _integer.ToText()</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ELSE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// On the old framework we have to use strings to convert.</SourceLine>
+   <SourceLine>Dim _encoding As TextEncoding</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Determine if the Xojo.Core.TextEncoding parameter is Nil, if so default to ASCII</SourceLine>
+   <SourceLine>If (encoding = Nil) Then</SourceLine>
+   <SourceLine>_encoding = Encodings.ASCII</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// We need to determine what encoding was passed so we can convert appropriately.</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create string to hold value and then set the value.</SourceLine>
+   <SourceLine>Dim _string As String</SourceLine>
+   <SourceLine>_string = a</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Define the encoding on the string.</SourceLine>
+   <SourceLine>_string = DefineEncoding(_string, _encoding)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// On Windows an empty string cannot be turned into a text, so let's avoid it.</SourceLine>
+   <SourceLine>#IF TargetWin32 THEN</SourceLine>
+   <SourceLine>If (_string = "") Then</SourceLine>
+   <SourceLine>Return ""</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>#ENDIF</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the return value to be the string now that the encoding is defined.</SourceLine>
+   <SourceLine>_return = _string.ToText()</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ENDIF</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the Text value</SourceLine>
+   <SourceLine>Return _return</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends a As Auto, encoding As Xojo.Core.TextEncoding = Nil</ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ToDouble</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ToDouble(Extends a As Auto) As Double</SourceLine>
+   <SourceLine>// Create Double variable</SourceLine>
+   <SourceLine>Dim _return As Double</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create Text variable</SourceLine>
+   <SourceLine>Dim _text As Text</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert Auto to Text</SourceLine>
+   <SourceLine>_text = a.ToText()</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert Text to Double</SourceLine>
+   <SourceLine>_return = Double.FromText(_text)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the Double value</SourceLine>
+   <SourceLine>Return _return</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends a As Auto</ItemParams>
+  <ItemResult>Double</ItemResult>
+ </Method>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

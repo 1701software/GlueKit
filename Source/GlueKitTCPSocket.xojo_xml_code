@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2014r3.1" FormatVersion="2" MinIDEVersion="20140300">
+<block type="Module" ID="1594153570">
+ <ObjName>GlueKitTCPSocket</ObjName>
+ <ObjContainerID>405387321</ObjContainerID>
+ <IsClass>1</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI) or  (TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor()</SourceLine>
+   <SourceLine>// Determine which framework to use and initialize pTcpSocket property.</SourceLine>
+   <SourceLine>#IF TargetDesktop OR TargetWeb OR TargetConsole THEN</SourceLine>
+   <SourceLine>// Initialize pTcpSocket</SourceLine>
+   <SourceLine>pTcpSocket = New TCPSocket</SourceLine>
+   <SourceLine>#ELSEIF TargetiOS THEN</SourceLine>
+   <SourceLine>// Initialize pTcpSocket</SourceLine>
+   <SourceLine>pTcpSocket = New Xojo.Net.TCPSocket</SourceLine>
+   <SourceLine>#ENDIF</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add handlers</SourceLine>
+   <SourceLine>AddHandler pTcpSocket.Connected, AddressOf hTcpSocket_Connected</SourceLine>
+   <SourceLine>AddHandler pTcpSocket.DataAvailable, AddressOf hTcpSocket_DataAvailable</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>hTcpSocket_Connected</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub hTcpSocket_Connected(sender As TCPSocket)</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine>// DESKTOP/WEB/CONSOLE</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Raise Connected event</SourceLine>
+   <SourceLine>Connected()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As TCPSocket</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>hTcpSocket_Connected</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub hTcpSocket_Connected(sender As Xojo.Net.TCPSocket)</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine>// iOS</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Raise Connected event</SourceLine>
+   <SourceLine>Connected()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As Xojo.Net.TCPSocket</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>hTcpSocket_DataAvailable</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub hTcpSocket_DataAvailable(sender As TCPSocket)</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine>// DESKTOP/WEB/CONSOLE</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Raise DataAvailable event</SourceLine>
+   <SourceLine>DataAvailable()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As TCPSocket</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>hTcpSocket_DataAvailable</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub hTcpSocket_DataAvailable(sender As Xojo.Net.TCPSocket)</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine>// iOS</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Raise DataAvailable event</SourceLine>
+   <SourceLine>DataAvailable()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As Xojo.Net.TCPSocket</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>hTcpSocket_Error</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub hTcpSocket_Error(sender As TCPSocket)</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine>// DESKTOP/WEB/CONSOLE</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use pTcpSocket.LastErrorCode to build RuntimeException</SourceLine>
+   <SourceLine>Dim re As New RuntimeException</SourceLine>
+   <SourceLine>re.ErrorNumber = pTcpSocket.LastErrorCode</SourceLine>
+   <SourceLine>re.Message = "TCPSocket Error"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Raise Error event</SourceLine>
+   <SourceLine>Error(re)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As TCPSocket</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>hTcpSocket_Error</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub hTcpSocket_Error(sender As Xojo.Net.TCPSocket, err As RuntimeException)</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine>// iOS</SourceLine>
+   <SourceLine>///////////////////////////////////////</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Raise Error event</SourceLine>
+   <SourceLine>Error(err)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As Xojo.Net.TCPSocket, err As RuntimeException</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Connect</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Connect()</SourceLine>
+   <SourceLine>// Call pTcpSocket.Connect()</SourceLine>
+   <SourceLine>pTcpSocket.Connect()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Disconnect</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Disconnect()</SourceLine>
+   <SourceLine>// Call pTcpSocket.Disconnect()</SourceLine>
+   <SourceLine>pTcpSocket.Disconnect()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ReadData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ReadData(Length As Integer, Encoding As Xojo.Core.TextEncoding) As Xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>// Determine which framework to use </SourceLine>
+   <SourceLine>#IF TargetDesktop OR TargetWeb OR TargetConsole THEN</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert Xojo.Core.TextEncoding to classic TextEncoding</SourceLine>
+   <SourceLine>Dim te As TextEncoding</SourceLine>
+   <SourceLine>If (Encoding = Xojo.Core.TextEncoding.ASCII) Then</SourceLine>
+   <SourceLine>te = Encodings.ASCII</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF8) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF8</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF16) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF16</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF16LittleEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF16LE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF16BigEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF16BE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF32) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF32</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF32LittleEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF32LE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF32BigEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF32BE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.Windows1252) Then</SourceLine>
+   <SourceLine>te = Encodings.ISOLatin1</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Call pTcpSocket.Read()</SourceLine>
+   <SourceLine>Dim rd As Text</SourceLine>
+   <SourceLine>rd = pTcpSocket.Read(Length, te).ToText()</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert text to MemoryBlock</SourceLine>
+   <SourceLine>Dim mb As Xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>mb = Encoding.ConvertTextToData(rd)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return MemoryBlock</SourceLine>
+   <SourceLine>Return mb</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ELSEIF TargetiOS THEN</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Call pTcpSocket.ReadData() method</SourceLine>
+   <SourceLine>Return pTcpSocket.ReadData(Length)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ENDIF</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Length As Integer, Encoding As Xojo.Core.TextEncoding</ItemParams>
+  <ItemResult>Xojo.Core.MemoryBlock</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AvailableData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function AvailableData(Encoding As Xojo.Core.TextEncoding) As Xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>// Determine which framework to use</SourceLine>
+   <SourceLine>#IF TargetDesktop OR TargetWeb OR TargetConsole THEN</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert Xojo.Core.TextEncoding to classic TextEncoding</SourceLine>
+   <SourceLine>Dim te As TextEncoding</SourceLine>
+   <SourceLine>If (Encoding = Xojo.Core.TextEncoding.ASCII) Then</SourceLine>
+   <SourceLine>te = Encodings.ASCII</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF8) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF8</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF16) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF16</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF16LittleEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF16LE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF16BigEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF16BE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF32) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF32</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF32LittleEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF32LE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.UTF32BigEndian) Then</SourceLine>
+   <SourceLine>te = Encodings.UTF32BE</SourceLine>
+   <SourceLine>ElseIf (Encoding = Xojo.Core.TextEncoding.Windows1252) Then</SourceLine>
+   <SourceLine>te = Encodings.ISOLatin1</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Read classic TCPSocket.ReadAll()</SourceLine>
+   <SourceLine>Dim rd As Text</SourceLine>
+   <SourceLine>rd = pTcpSocket.ReadAll(te).ToText()</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert text to MemoryBlock</SourceLine>
+   <SourceLine>Dim mb As Xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>mb = Encoding.ConvertTextToData(rd)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return MemoryBlock</SourceLine>
+   <SourceLine>Return mb</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ELSEIF TargetiOS THEN</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Call pTcpSocket.AvailableData() method</SourceLine>
+   <SourceLine>Return pTcpSocket.AvailableData()</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ENDIF</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Encoding As Xojo.Core.TextEncoding</ItemParams>
+  <ItemResult>Xojo.Core.MemoryBlock</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>WriteData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub WriteData(Data As Xojo.Core.MemoryBlock, Encoding As xojo.Core.TextEncoding)</SourceLine>
+   <SourceLine>// Determine which framework to use</SourceLine>
+   <SourceLine>#IF TargetDesktop OR TargetWeb OR TargetConsole THEN</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert MemoryBlock to Text</SourceLine>
+   <SourceLine>Dim wd As Text</SourceLine>
+   <SourceLine>wd = Encoding.ConvertDataToText(Data)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Call pTcpSocket.Write() method</SourceLine>
+   <SourceLine>pTcpSocket.Write(wd)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ELSEIF TargetiOS THEN</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Call pTcpSocket.WriteData() method</SourceLine>
+   <SourceLine>pTcpSocket.WriteData(Data)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#ENDIF</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Data As Xojo.Core.MemoryBlock, Encoding As xojo.Core.TextEncoding</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Hook>
+  <ItemName>Connected</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>DataAvailable</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>Error</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>ErrorException As RuntimeException</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Property>
+  <ItemName>pTcpSocket</ItemName>
+  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>pTcpSocket As TCPSocket</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>pTcpSocket As TCPSocket</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>pTcpSocket</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>pTcpSocket As Xojo.Net.TCPSocket</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>pTcpSocket As Xojo.Net.TCPSocket</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Address</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Address As Text</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Address As Text</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>// Update pTcpSocket.Address</SourceLine>
+   <SourceLine>pTcpSocket.Address = Value</SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>// Determine what framework we are using.</SourceLine>
+   <SourceLine>#IF TargetDesktop OR TargetWeb OR TargetConsole THEN</SourceLine>
+   <SourceLine>Return pTcpSocket.Address.ToText()</SourceLine>
+   <SourceLine>#ELSEIF TargetiOS THEN</SourceLine>
+   <SourceLine>// Return pTcpSocket.Address</SourceLine>
+   <SourceLine>Return pTcpSocket.Address</SourceLine>
+   <SourceLine>#ENDIF</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>BytesAvailable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>BytesAvailable As UInteger</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>BytesAvailable As UInteger</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>// Return pTcpSocket.BytesAvailable</SourceLine>
+   <SourceLine>Return pTcpSocket.BytesAvailable</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>IsConnected</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IsConnected As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IsConnected As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>// Return pTcpSocket.IsConnected</SourceLine>
+   <SourceLine>Return pTcpSocket.IsConnected</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>Port</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Port As Int32</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Port As Int32</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>// Update pTcpSocket.Port</SourceLine>
+   <SourceLine>pTcpSocket.Port = Value</SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>// Return pTcpSocket.Port</SourceLine>
+   <SourceLine>Return pTcpSocket.Port</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Address</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Text</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>IsConnected</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

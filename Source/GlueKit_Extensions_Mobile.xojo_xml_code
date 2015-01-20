@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2014r3.1" FormatVersion="2" MinIDEVersion="20070100">
+<block type="Module" ID="2042238705">
+ <ObjName>GlueKit_Extensions_Mobile</ObjName>
+ <ObjContainerID>405387321</ObjContainerID>
+ <IsClass>0</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>DeviceName</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <CodeDescription>The iOS device name.</CodeDescription>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DeviceName(Extends app As iOSApplication) As Text</SourceLine>
+   <SourceLine>Declare Function NSClassFromString Lib "Foundation" (aClassName As CFStringRef) As Ptr</SourceLine>
+   <SourceLine>Declare Function UIDeviceCurrentDevice Lib "UIKit" Selector "currentDevice" (id As Ptr) as Ptr</SourceLine>
+   <SourceLine>Declare Function UIDeviceName Lib "UIKit" Selector "name" (id As Ptr) As CFStringRef</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim UIDevice As Ptr</SourceLine>
+   <SourceLine>UIDevice = NSClassFromString("UIDevice")</SourceLine>
+   <SourceLine>Dim currentDevice As Ptr</SourceLine>
+   <SourceLine>currentDevice = UIDeviceCurrentDevice(UIDevice)</SourceLine>
+   <SourceLine>Dim deviceName As Text</SourceLine>
+   <SourceLine>deviceName = UIDeviceName(currentDevice)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return deviceName</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends app As iOSApplication</ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EvaluateJavascript</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EvaluateJavascript(Extends web AS iOSHTMLViewer, JS As Text) As Text</SourceLine>
+   <SourceLine>Declare Function stringByEvaluatingJavaScriptFromString Lib "UIKit" Selector "stringByEvaluatingJavaScriptFromString:" (id As Ptr, js As CFStringRef) As CFStringRef</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim jsResponse As Text</SourceLine>
+   <SourceLine>jsResponse = stringByEvaluatingJavascriptFromString(web.Handle, JS)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return jsResponse</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>Extends web AS iOSHTMLViewer, JS As Text</ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <ExternalMethod>
+  <ItemName>NSClassFromString</ItemName>
+  <Compatibility>(TargetIOS)</Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Function NSClassFromString Lib "Foundation" (aClassName as CFStringRef) As Ptr</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>aClassName as CFStringRef</ItemParams>
+  <ItemResult>Ptr</ItemResult>
+  <LibraryName>Foundation</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

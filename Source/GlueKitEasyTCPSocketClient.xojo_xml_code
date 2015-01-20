@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2014r3.1" FormatVersion="2" MinIDEVersion="20140300">
+<block type="Module" ID="1538124119">
+ <ObjName>GlueKitEasyTCPSocketClient</ObjName>
+ <ObjContainerID>405387321</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>GlueKitTCPSocket</Superclass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <HookInstance>
+  <ItemName>DataAvailable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DataAvailable()</SourceLine>
+   <SourceLine>ProcessData</SourceLine>
+   <SourceLine>FireEvents</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <Method>
+  <ItemName>AddEvent</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddEvent(command as Integer, data as Text)</SourceLine>
+   <SourceLine>mEvents.Append(command)</SourceLine>
+   <SourceLine>mEvents.Append(data)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>command as Integer, data as Text</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor()</SourceLine>
+   <SourceLine>// Initialize parent ExcelsiorKitTCPSocket</SourceLine>
+   <SourceLine>Super.Constructor()</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CreatePacket</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function CreatePacket(command as Integer, data as Text) As Xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>Dim encodedData As Xojo.Core.MemoryBlock = Xojo.Core.TextEncoding.UTF8.ConvertTextToData(data)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We want to take the data we have been given and form a packet with it.</SourceLine>
+   <SourceLine>Dim dataLen As Integer = encodedData.Size</SourceLine>
+   <SourceLine>Dim mb As Xojo.Core.MutableMemoryBlock = New Xojo.Core.MutableMemoryBlock( 4 + 4 )</SourceLine>
+   <SourceLine>mb.LittleEndian = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The first 4 bytes are the size of the entire packet.</SourceLine>
+   <SourceLine>mb.Int32Value( 0 ) = 4 + 4 + dataLen</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The next 4 bytes are the command</SourceLine>
+   <SourceLine>mb.Int32Value( 4 ) = command</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The final chunk of bytes is the data</SourceLine>
+   <SourceLine>mb.Append( encodedData )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return mb</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>command as Integer, data as Text</ItemParams>
+  <ItemResult>Xojo.Core.MemoryBlock</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>FireEvents</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub FireEvents()</SourceLine>
+   <SourceLine>// If there are no messages, we don't have any events to fire</SourceLine>
+   <SourceLine>If UBound( mEvents ) &lt; 0 Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Otherwise, grab a message from the queue and fire an event for it</SourceLine>
+   <SourceLine>Dim command As Integer</SourceLine>
+   <SourceLine>Dim userData As Text</SourceLine>
+   <SourceLine>RetrieveEvent( command, userData )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// And fire the event</SourceLine>
+   <SourceLine>ReceivedMessage( command, userData )</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ProcessData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ProcessData()</SourceLine>
+   <SourceLine>While BytesAvailable &gt;= 8</SourceLine>
+   <SourceLine>Dim lookahead As Xojo.Core.MemoryBlock = AvailableData(Encoding)</SourceLine>
+   <SourceLine>lookahead.LittleEndian = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the first byte of the data we have. This will tell us how much data to</SourceLine>
+   <SourceLine>// expect to receive for the packet.</SourceLine>
+   <SourceLine>Dim packetSize As Integer = lookahead.Int32Value( 0 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check to see that the value is something sane</SourceLine>
+   <SourceLine>If packetSize &lt;= 0 Then</SourceLine>
+   <SourceLine>// Something's seriously wrong!  Let's bail out</SourceLine>
+   <SourceLine>Disconnect</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check to see if we got a packet of data</SourceLine>
+   <SourceLine>If packetSize &gt; BytesAvailable Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Read the whole packet</SourceLine>
+   <SourceLine>Dim packet As Xojo.Core.MemoryBlock = Super.ReadData(packetSize, Encoding)</SourceLine>
+   <SourceLine>packet.LittleEndian = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Try to get the command</SourceLine>
+   <SourceLine>Dim command As Integer = packet.Int32Value( 4 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The protocol didn't specify an encoding, but assume UTF-8 and fail 'gracefully'</SourceLine>
+   <SourceLine>// on invalid input.</SourceLine>
+   <SourceLine>Dim userData As Text = Xojo.Core.TextEncoding.UTF8.ConvertDataToText( packet.Mid( 8 ), True )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// And place this information on the queue of messages to be fired</SourceLine>
+   <SourceLine>AddEvent( command, userData )</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ReadData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ReadData(length As Integer) As xojo.Core.MemoryBlock</SourceLine>
+   <SourceLine>// Well, since TCPSocket allows you to do things like read and that would</SourceLine>
+   <SourceLine>// totally muck with our protocol, we're not going to allow the user to call</SourceLine>
+   <SourceLine>// read. Instead, we're going to be mean and raise an exception.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim ex As New RuntimeException</SourceLine>
+   <SourceLine>ex.Reason = "You cannot call Read on an EasyTCPSocket directly."</SourceLine>
+   <SourceLine>Raise ex</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>length As Integer</ItemParams>
+  <ItemResult>xojo.Core.MemoryBlock</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>RetrieveEvent</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub RetrieveEvent(ByRef command as Integer, ByRef userData as Text)</SourceLine>
+   <SourceLine>If UBound( mEvents ) &lt; 0 Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>command = mEvents( 0 )</SourceLine>
+   <SourceLine>userData = mEvents( 1 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>mEvents.Remove( 1 )</SourceLine>
+   <SourceLine>mEvents.Remove( 0 )</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>ByRef command as Integer, ByRef userData as Text</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SendMessage</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SendMessage(command as Integer, data as Text)</SourceLine>
+   <SourceLine>If Not IsConnected Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a packet with the data we've been given and write it out.</SourceLine>
+   <SourceLine>Dim mb As Xojo.Core.MemoryBlock = CreatePacket( command, data )</SourceLine>
+   <SourceLine>Super.WriteData(mb, Encoding)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>command as Integer, data as Text</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>WriteData</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub WriteData(data As xojo.Core.MemoryBlock)</SourceLine>
+   <SourceLine>// Well, since TCPSocket allows you to do things like read and that would</SourceLine>
+   <SourceLine>// totally muck with our protocol, we're not going to allow the user to call</SourceLine>
+   <SourceLine>// read. Instead, we're going to be mean and raise an exception.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim ex As New RuntimeException</SourceLine>
+   <SourceLine>ex.Reason = "You cannot call Write on a SimpleTCPSocket directly."</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise ex</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>data As xojo.Core.MemoryBlock</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Hook>
+  <ItemName>ReceivedMessage</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>command as Integer, data as Text</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Property>
+  <ItemName>mEvents(-1)</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mEvents(-1) As Auto</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mEvents(-1) As Auto</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Encoding</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Encoding As Xojo.Core.TextEncoding</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Encoding As Xojo.Core.TextEncoding</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>IsConnected</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Address</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Text</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>
