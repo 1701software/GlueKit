@@ -1,9 +1,9 @@
-GlueKit for Xojo 2015 r1
+GlueKit for Xojo 2015 r2.1
 -------------------------
 
 GlueKit was written by 1701 Software (http://www.1701software.com) in order to support cross platform code in Xojo. Currently Xojo is developing the "new framework" which primarily focuses on the iOS platform. The goal is to eventually bring those classes to the desktop/web platforms. However until they do so 100% it is difficult to write one set of business logic to be shared between platforms.
 
-For instance let's say you want to write a class that interacts with a web service. You might subclass the Xojo.Net.HTTPSocket in iOS and utilize its events and methods. This allows you to just interact with that one class without having to integrate the web service code into the presentation layer of your app. The subclass you developed will not work on a desktop or web project because the Xojo.Net.HTTPSocket class is not available.
+For instance let's say you want to write a class that interacts with a web service. You might subclass the Xojo.Net.HTTPSocket in iOS and utilize its events and methods. This allows you to just interact with that one class without having to integrate the web service code into the presentation layer of your app. The subclass you developed will not work on a desktop or web project because the Xojo.Net.HTTPSocket class is not available. [5/14/2015: Xojo.Net.HTTPSocket has been added in Xojo 2015r2. This example still illustrates the purpose of GlueKit and applicable to GlueKitTCPSocket just the same.]
 
 However if you use GlueKit and subclass from GlueKitHTTPSocket then you get the best of both worlds. GlueKit automatically uses the best framework depending on the situation. GlueKit is a 99% code compatible drop-in replacement for the Xojo new framework. When Xojo does release Xojo.Net.HTTPSocket for desktop you can just change the super class of your web service subclass to Xojo.Net.HTTPSocket and everything should work. We do this be mimicking the Xojo.Net.HTTPSocket methods/properties/events making it a drop-in replacement.
 
@@ -13,22 +13,6 @@ GlueKitTCPSocket
 - Xojo.Net.TCPSocket is not currently available on all desktop platforms.
 - Drop in replacement for Xojo.Net.TCPSocket. On desktop uses the TCPSocket class.
 - Will be removed once Xojo.Net.TCPSocket is available on the desktop.
-
-GlueKitHTTPSocket
-- Xojo.Net.HTTPSocket is not currently available on all desktop platforms.
-- Drop in replacement for Xojo.Net.HTTPSocket. On desktop uses the HTTPSecureSocket class.
-- Will be removed once Xojo.Net.HTTPSocket is available on the desktop.
-
-GlueKitFolderItem
-- Xojo.IO.FolderItem is not currently available on all desktop platforms.
-- Drop in replacement for Xojo.IO.FolderItem. On desktop uses the FolderItem class.
-- Will be removed once Xojo.IO.FolderItem is available on the desktop.
-
-GlueKitSpecialFolder
-- Xojo.IO.SpecialFolder is not currently available on all desktop platforms.
-- Used to instantiate an instance of GlueKitFolderItem.
-- Drop in replacement for Xojo.IO.SpecialFolder. On desktop uses the SpecialFolder class.
-- Will be removed once GlueKitFolderItem can be removed.
 
 GlueKitEasyTCPSocketClient
 - This is the Xojo EacyTCPSocketClient source modified to use GlueKitTCPSocket. 
@@ -45,15 +29,6 @@ GlueKit_Extensions
 - ParseJSON method extends Text to provide the same functionality as the Xojo.Data module. This allows you to parse JSON the same way across all platforms. Not 100% complete as sub-JSON needs to be handled as Auto() arrays. Will be fixed.
 - Will be removed once Xojo natively supports these methods (Xojo.Data module for instance).
 
-GlueKit_Extensions_Mobile
-- This module provides multiple methods exclusively for the iOS platform.
-- DeviceName provides the unique iOS device name.
-- EvaluateJavascript allows you to execute and evaluate Javascript in a iOSHTMLViewer object.
-- Will be removed once Xojo natively supports these methods.
-
-GlueKitInvalidJSONException
-- Just a subclass on RuntimeException to provide GlueKit-compatible JSON exceptions when using the Text.ParseJSON() method.
-
 We do plan to add more classes as we need them for our own projects. We will happily accept pull requests. Please respect the spirit of GlueKit to strictly be a set of extensions for new framework shortcomings. Replacements for new framework classes should be a drop-in replacement.
 
 The goal here is to make GlueKit easily replaceable with Xojo new framework equivalents once available. GlueKit SHOULD get smaller over time.
@@ -63,4 +38,11 @@ Please check out our blog at http://dev.1701software.com
 UPDATES:
 --------
 
-April 4th, 2015: Removed GlueKitTimer as Xojo.Core.Timer was introduced in 2015r1.
+May 15th, 2015: 
+ - Removed GlueKitInvalidJSONException as Xojo.Data.InvalidJSONException was introduced in 2015r2.
+ - Removed GlueKitHTTPSocket as Xojo.Net.HTTPSocket was introduced in 2015r2.
+ - Removed GlueKitFolderItem as Xojo.IO.FolderItem was introduced in 2015r2.
+ - Removed GlueKitSpecialFolder as Xojo.IO.SpecialFolder was introduced in 2015r2.
+ - Removed GlueKit_Extensions_Mobile as it does not fit the spirit of GlueKit by adding features.
+April 4th, 2015: 
+ - Removed GlueKitTimer as Xojo.Core.Timer was introduced in 2015r1.
