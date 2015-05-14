@@ -24,10 +24,6 @@ GlueKit_Extensions
 - This module provides numerous extensions and methods to assist in development for various new framework shortcomings.
 - EncodeBase64/DecodeBase64 provided by Kim Tekinay. See: https://forum.xojo.com/18743-encode-decodebase64-in-ios/p1#p157101 
 - EncodeHex extends the Text type.
-- ToDouble and ToText extend the Auto type. On the desktop (Windows specifically) the Auto type cannot be auto-cast to a Text or Integer/Double without raising an exception. These methods do it in a safe way.
-- Additionally the .ToText() method handles empty strings which currently raises an exception on the desktop.
-- ParseJSON method extends Text to provide the same functionality as the Xojo.Data module. This allows you to parse JSON the same way across all platforms. Not 100% complete as sub-JSON needs to be handled as Auto() arrays. Will be fixed.
-- Will be removed once Xojo natively supports these methods (Xojo.Data module for instance).
 
 We do plan to add more classes as we need them for our own projects. We will happily accept pull requests. Please respect the spirit of GlueKit to strictly be a set of extensions for new framework shortcomings. Replacements for new framework classes should be a drop-in replacement.
 
