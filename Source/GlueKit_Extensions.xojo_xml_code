@@ -127,13 +127,8 @@
    <SourceLine></SourceLine>
    <SourceLine>dim chars() as text</SourceLine>
    <SourceLine>dim mb as Xojo.Core.MemoryBlock</SourceLine>
-   <SourceLine>#if TargetIOS then</SourceLine>
    <SourceLine>mb = Xojo.Core.TextEncoding.UTF8.ConvertTextToData( t )</SourceLine>
-   <SourceLine>#else</SourceLine>
-   <SourceLine>mb = Xojo.Core.TextEncoding.UTF8.ConvertTextToData(t)</SourceLine>
-   <SourceLine>#endif</SourceLine>
    <SourceLine>mb.LittleEndian = false</SourceLine>
-   <SourceLine></SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>dim lastByteIndex as integer = mb.Size - 1</SourceLine>
    <SourceLine>for masterIndex as integer = 0 to lastByteIndex step 3</SourceLine>
