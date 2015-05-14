@@ -36,73 +36,6 @@
   <ItemResult>Text</ItemResult>
  </Method>
  <Method>
-  <ItemName>ParseJSON</ItemName>
-  <Compatibility>(TargetIOS)</Compatibility>
-  <Visible>1</Visible>
-  <ItemSource>
-   <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Function ParseJSON(Extends t As Text) As Auto</SourceLine>
-   <SourceLine>Return Xojo.Data.ParseJSON(t)</SourceLine>
-   <SourceLine>End Function</SourceLine>
-  </ItemSource>
-  <TextEncoding>134217984</TextEncoding>
-  <AliasName></AliasName>
-  <ItemFlags>0</ItemFlags>
-  <IsShared>0</IsShared>
-  <ItemParams>Extends t As Text</ItemParams>
-  <ItemResult>Auto</ItemResult>
- </Method>
- <Method>
-  <ItemName>ParseJSON</ItemName>
-  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
-  <Visible>1</Visible>
-  <ItemSource>
-   <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Function ParseJSON(Extends t As Text) As Auto</SourceLine>
-   <SourceLine>// Create old framework style JSONItem</SourceLine>
-   <SourceLine>Dim _json As New JSONItem</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Create top level dictionary</SourceLine>
-   <SourceLine>Dim _auto As Auto</SourceLine>
-   <SourceLine>Dim _multi() As Xojo.Core.Dictionary</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Attempt to parse JSON data</SourceLine>
-   <SourceLine>Try</SourceLine>
-   <SourceLine>_json.Load(t)</SourceLine>
-   <SourceLine>Catch e As JSONException</SourceLine>
-   <SourceLine>// Problem parsing the JSON. Create type 'Xojo.Data.InvalidJSONException'</SourceLine>
-   <SourceLine>Dim error As New Xojo.Data.InvalidJSONException</SourceLine>
-   <SourceLine>error.ErrorNumber = e.ErrorNumber</SourceLine>
-   <SourceLine>error.Message = e.Message</SourceLine>
-   <SourceLine>error.Reason = e.Reason</SourceLine>
-   <SourceLine>Raise error</SourceLine>
-   <SourceLine>End Try</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Determine if this item is an array.</SourceLine>
-   <SourceLine>If (_json.IsArray() = True) Then</SourceLine>
-   <SourceLine>// Loop through items in array, convert them to Dictionaries and add to _top</SourceLine>
-   <SourceLine>For J As Integer = 1 To _json.Count</SourceLine>
-   <SourceLine>Dim _tempDic As Xojo.Core.Dictionary</SourceLine>
-   <SourceLine>_tempDic = mConvertJsonItemToDictionary(_json.Child(J - 1))</SourceLine>
-   <SourceLine>_multi.Append(_tempDic)</SourceLine>
-   <SourceLine>Next</SourceLine>
-   <SourceLine>// Return multiple dictionaries as Auto() array</SourceLine>
-   <SourceLine>Return _multi</SourceLine>
-   <SourceLine>Else</SourceLine>
-   <SourceLine>// This item is not an array.</SourceLine>
-   <SourceLine>_auto = mConvertJsonItemToDictionary(_json)</SourceLine>
-   <SourceLine>Return _auto</SourceLine>
-   <SourceLine>End If</SourceLine>
-   <SourceLine>End Function</SourceLine>
-  </ItemSource>
-  <TextEncoding>134217984</TextEncoding>
-  <AliasName></AliasName>
-  <ItemFlags>0</ItemFlags>
-  <IsShared>0</IsShared>
-  <ItemParams>Extends t As Text</ItemParams>
-  <ItemResult>Auto</ItemResult>
- </Method>
- <Method>
   <ItemName>mBase64ValueOf</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
@@ -349,58 +282,6 @@
   <ItemResult>Xojo.Core.MemoryBlock</ItemResult>
  </Method>
  <Method>
-  <ItemName>mConvertJSONItemToDictionary</ItemName>
-  <Compatibility>(not TargetHasGUI and not TargetWeb and not TargetIOS) or  (TargetWeb) or  (TargetHasGUI)</Compatibility>
-  <Visible>1</Visible>
-  <ItemSource>
-   <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Function mConvertJSONItemToDictionary(json As JSONItem) As Xojo.Core.Dictionary</SourceLine>
-   <SourceLine>// Create instance of Xojo.Core.Dictionary</SourceLine>
-   <SourceLine>Dim _dic As New Xojo.Core.Dictionary</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Determine if the JSON is an array or not.</SourceLine>
-   <SourceLine>If (json.IsArray = True) Then</SourceLine>
-   <SourceLine>For X As Integer = 0 To json.Count - 1</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Convert this variant to a string</SourceLine>
-   <SourceLine>Dim _variant As Variant</SourceLine>
-   <SourceLine>_variant = json(X)</SourceLine>
-   <SourceLine>Dim _string As String</SourceLine>
-   <SourceLine>_string = DefineEncoding(_variant.StringValue, Encodings.ASCII)</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Return JSON string as value.</SourceLine>
-   <SourceLineBreakpoint>14</SourceLineBreakpoint>
-   <SourceLine>If (_string &lt;&gt; "") Then</SourceLine>
-   <SourceLine>_dic.Value(X.ToText()) = _string.ToText()</SourceLine>
-   <SourceLine>End If</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>Next</SourceLine>
-   <SourceLine>Else</SourceLine>
-   <SourceLine>// Loop through JSONItem names and add to dictionary</SourceLine>
-   <SourceLine>For Each J As String In json.Names()</SourceLine>
-   <SourceLine>// Determine if the item is a sub-JSON item.</SourceLine>
-   <SourceLine>Dim _type As Xojo.Introspection.TypeInfo = Xojo.Introspection.GetType(json.Value(J))</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>If (_type.FullName = "JSONItem") Then</SourceLine>
-   <SourceLine>_dic.Value(J) = mConvertJSONItemToDictionary(json.Value(J))</SourceLine>
-   <SourceLine>Else</SourceLine>
-   <SourceLine>_dic.Value(J) = json.Value(J).StringValue</SourceLine>
-   <SourceLine>End If</SourceLine>
-   <SourceLine>Next</SourceLine>
-   <SourceLine>End If</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Return Dictionary</SourceLine>
-   <SourceLine>Return _dic</SourceLine>
-   <SourceLine>End Function</SourceLine>
-  </ItemSource>
-  <TextEncoding>134217984</TextEncoding>
-  <AliasName></AliasName>
-  <ItemFlags>33</ItemFlags>
-  <IsShared>0</IsShared>
-  <ItemParams>json As JSONItem</ItemParams>
-  <ItemResult>Xojo.Core.Dictionary</ItemResult>
- </Method>
- <Method>
   <ItemName>ToText</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
@@ -409,9 +290,6 @@
    <SourceLine>Function ToText(Extends a As Auto, encoding As Xojo.Core.TextEncoding = Nil) As Text</SourceLine>
    <SourceLine>// Create Text variable</SourceLine>
    <SourceLine>Dim _return As Text</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Determine OS/Framework</SourceLine>
-   <SourceLine>#IF TargetiOS THEN</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Use introspection to determine if this is a number.</SourceLine>
    <SourceLine>Dim _type As Xojo.Introspection.TypeInfo</SourceLine>
@@ -434,37 +312,6 @@
    <SourceLine>// Convert Integer to Text</SourceLine>
    <SourceLine>_return = _integer.ToText()</SourceLine>
    <SourceLine>End If</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>#ELSE</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// On the old framework we have to use strings to convert.</SourceLine>
-   <SourceLine>Dim _encoding As TextEncoding</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Determine if the Xojo.Core.TextEncoding parameter is Nil, if so default to ASCII</SourceLine>
-   <SourceLine>If (encoding = Nil) Then</SourceLine>
-   <SourceLine>_encoding = Encodings.ASCII</SourceLine>
-   <SourceLine>Else</SourceLine>
-   <SourceLine>// We need to determine what encoding was passed so we can convert appropriately.</SourceLine>
-   <SourceLine>End If</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Create string to hold value and then set the value.</SourceLine>
-   <SourceLine>Dim _string As String</SourceLine>
-   <SourceLine>_string = a</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Define the encoding on the string.</SourceLine>
-   <SourceLine>_string = DefineEncoding(_string, _encoding)</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// On Windows an empty string cannot be turned into a text, so let's avoid it.</SourceLine>
-   <SourceLine>#IF TargetWin32 THEN</SourceLine>
-   <SourceLine>If (_string = "") Then</SourceLine>
-   <SourceLine>Return ""</SourceLine>
-   <SourceLine>End If</SourceLine>
-   <SourceLine>#ENDIF</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Set the return value to be the string now that the encoding is defined.</SourceLine>
-   <SourceLine>_return = _string.ToText()</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>#ENDIF</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Return the Text value</SourceLine>
    <SourceLine>Return _return</SourceLine>
