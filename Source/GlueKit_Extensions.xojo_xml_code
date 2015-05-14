@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2014r3.1" FormatVersion="2" MinIDEVersion="20140300">
+<RBProject version="2015r2.1" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1352907943">
  <ObjName>GlueKit_Extensions</ObjName>
  <ObjContainerID>245979215</ObjContainerID>
@@ -70,8 +70,8 @@
    <SourceLine>Try</SourceLine>
    <SourceLine>_json.Load(t)</SourceLine>
    <SourceLine>Catch e As JSONException</SourceLine>
-   <SourceLine>// Problem parsing the JSON. Create type 'GlueKitInvalidJSONException'</SourceLine>
-   <SourceLine>Dim error As New GlueKitInvalidJSONException</SourceLine>
+   <SourceLine>// Problem parsing the JSON. Create type 'Xojo.Data.InvalidJSONException'</SourceLine>
+   <SourceLine>Dim error As New Xojo.Data.InvalidJSONException</SourceLine>
    <SourceLine>error.ErrorNumber = e.ErrorNumber</SourceLine>
    <SourceLine>error.Message = e.Message</SourceLine>
    <SourceLine>error.Reason = e.Reason</SourceLine>
