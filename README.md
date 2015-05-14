@@ -45,6 +45,7 @@ May 15th, 2015:
  - Removed GlueKitSpecialFolder as Xojo.IO.SpecialFolder was introduced in 2015r2.
  - Removed GlueKit_Extensions_Mobile as it does not fit the spirit of GlueKit by adding features.
  - Removed .ParseJSON() method from GlueKit_Extensions. Xojo now supports Xojo.Data.ParseJSON() on Desktop.
+ - Removed ToText() and ToDouble() Auto extensions. No longer needed because Xojo Auto handling is better on Desktop.
 
 April 4th, 2015: 
  - Removed GlueKitTimer as Xojo.Core.Timer was introduced in 2015r1.
