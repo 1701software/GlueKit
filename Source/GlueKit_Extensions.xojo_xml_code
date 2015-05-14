@@ -217,7 +217,7 @@
    <SourceLine>if encoded.Right( 2 ) = "==" then</SourceLine>
    <SourceLine>nullCount = 2</SourceLine>
    <SourceLine>elseif encoded.Right( 1 ) = "=" then</SourceLine>
-   <SourceLine>nullCount = 1</SourceLine>
+   <SourceLine>'nullCount = 1</SourceLine>
    <SourceLine>end if</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>dim mb as Xojo.Core.MemoryBlock = Xojo.Core.TextEncoding.UTF8.ConvertTextToData( encoded )</SourceLine>
@@ -275,79 +275,6 @@
   <IsShared>0</IsShared>
   <ItemParams>Encoded As Text</ItemParams>
   <ItemResult>Xojo.Core.MemoryBlock</ItemResult>
- </Method>
- <Method>
-  <ItemName>ToText</ItemName>
-  <Compatibility></Compatibility>
-  <Visible>1</Visible>
-  <ItemSource>
-   <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Function ToText(Extends a As Auto, encoding As Xojo.Core.TextEncoding = Nil) As Text</SourceLine>
-   <SourceLine>// Create Text variable</SourceLine>
-   <SourceLine>Dim _return As Text</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Use introspection to determine if this is a number.</SourceLine>
-   <SourceLine>Dim _type As Xojo.Introspection.TypeInfo</SourceLine>
-   <SourceLine>_type = Xojo.Introspection.GetType(a)</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Determine type of class.</SourceLine>
-   <SourceLine>If (_type.FullName = "Text") Then</SourceLine>
-   <SourceLine>// On iOS we can convert to Text automatically</SourceLine>
-   <SourceLine>_return = a</SourceLine>
-   <SourceLine>ElseIf (_type.FullName = "Double") Then</SourceLine>
-   <SourceLine>// Let's create this as a Double</SourceLine>
-   <SourceLine>Dim _double As Double</SourceLine>
-   <SourceLine>_double = a</SourceLine>
-   <SourceLine>// Convert Double to Text</SourceLine>
-   <SourceLine>_return = _double.ToText()</SourceLine>
-   <SourceLine>ElseIf (_type.FullName = "Int32") Then</SourceLine>
-   <SourceLine>// Let's create this as a Integer</SourceLine>
-   <SourceLine>Dim _integer As Integer</SourceLine>
-   <SourceLine>_integer = a</SourceLine>
-   <SourceLine>// Convert Integer to Text</SourceLine>
-   <SourceLine>_return = _integer.ToText()</SourceLine>
-   <SourceLine>End If</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Return the Text value</SourceLine>
-   <SourceLine>Return _return</SourceLine>
-   <SourceLine>End Function</SourceLine>
-  </ItemSource>
-  <TextEncoding>134217984</TextEncoding>
-  <AliasName></AliasName>
-  <ItemFlags>0</ItemFlags>
-  <IsShared>0</IsShared>
-  <ItemParams>Extends a As Auto, encoding As Xojo.Core.TextEncoding = Nil</ItemParams>
-  <ItemResult>Text</ItemResult>
- </Method>
- <Method>
-  <ItemName>ToDouble</ItemName>
-  <Compatibility></Compatibility>
-  <Visible>1</Visible>
-  <ItemSource>
-   <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Function ToDouble(Extends a As Auto) As Double</SourceLine>
-   <SourceLine>// Create Double variable</SourceLine>
-   <SourceLine>Dim _return As Double</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Create Text variable</SourceLine>
-   <SourceLine>Dim _text As Text</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Convert Auto to Text</SourceLine>
-   <SourceLine>_text = a.ToText()</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Convert Text to Double</SourceLine>
-   <SourceLine>_return = Double.FromText(_text)</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// Return the Double value</SourceLine>
-   <SourceLine>Return _return</SourceLine>
-   <SourceLine>End Function</SourceLine>
-  </ItemSource>
-  <TextEncoding>134217984</TextEncoding>
-  <AliasName></AliasName>
-  <ItemFlags>0</ItemFlags>
-  <IsShared>0</IsShared>
-  <ItemParams>Extends a As Auto</ItemParams>
-  <ItemResult>Double</ItemResult>
  </Method>
  <ViewBehavior>
   <ViewProperty>
